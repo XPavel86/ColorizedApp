@@ -145,7 +145,7 @@ extension SettingsViewController: UITextFieldDelegate {
         if newText.contains("..") {
             return false
         }
-
+ 
         // Проверяем, что в тексте не более одной точки
         let numberOfDots = newText.components(separatedBy: ".").count - 1
         if numberOfDots > 1 && string == "." {

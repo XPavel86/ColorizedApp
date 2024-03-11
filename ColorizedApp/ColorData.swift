@@ -11,7 +11,7 @@ struct ColorRGB: CustomStringConvertible {
     var description: String {
             return "(\(red), \(green), \(green))"
         }
-    
+     
     var red: Float
     var green: Float
     var blue: Float
