@@ -8,43 +8,26 @@
 import UIKit
 
 protocol SettingsViewControllerDelegate: AnyObject {
-    func setColor(color: ColorRGB)
+    func setColor(_ color: UIColor)
 }
- 
+
 class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let settingsVC = segue.destination as? SettingsViewController
-        settingsVC?.delegate = self
-        
-        settingsVC?.color = extractRGB(from: view.backgroundColor ?? .white) 
-    }
     
-    func extractRGB(from color: UIColor) -> ColorRGB {
-        var red: CGFloat = 0
-        var green: CGFloat = 0
-        var blue: CGFloat = 0
-        var alpha: CGFloat = 0
-
-        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let settingsVC = segue.destination as? SettingsViewController else {  return }
         
-        return ColorRGB(red: Float(red), green: Float(green), blue: Float(blue))
+        settingsVC.delegate = self
+        settingsVC.color = view.backgroundColor ?? .white
     }
 }
 
 extension MainViewController: SettingsViewControllerDelegate {
-    
-    func setColor(color: ColorRGB) {
+    func setColor(_ color: UIColor) {
         
-        view.backgroundColor = UIColor(
-            red: CGFloat(color.red),
-            green: CGFloat(color.green),
-            blue: CGFloat(color.blue),
-            alpha: 1
-        )
+        view.backgroundColor = color
     }
 }

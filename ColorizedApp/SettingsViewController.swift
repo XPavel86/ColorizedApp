@@ -25,7 +25,7 @@ class SettingsViewController: UIViewController {
     @IBOutlet var blueTextField: UITextField!
     
     // MARK: - Public Properties
-    var color = ColorRGB(red: 0.1, green: 0.3, blue: 0.5)
+    var color = UIColor(red: 0.1, green: 0.2, blue: 0.3, alpha: 1)
     
     weak var delegate: SettingsViewControllerDelegate?
     
@@ -66,23 +66,19 @@ class SettingsViewController: UIViewController {
             blueTextField.text = value
         }
         
-        color = ColorRGB(
-            red: redSlider.value,
-            green: greenSlider.value,
-            blue: blueSlider.value
-        )
-        
-        colorView.backgroundColor = UIColor(
+        color = UIColor(
             red: CGFloat(redSlider.value),
             green: CGFloat(greenSlider.value),
             blue: CGFloat(blueSlider.value),
             alpha: 1.0
         )
+        
+        colorView.backgroundColor = color
     }
     
     @IBAction func donePressed() {
         hideKeyboard()
-        delegate?.setColor(color: color)
+        delegate?.setColor(color)
         dismiss(animated: true)
     }
     
@@ -98,17 +94,19 @@ extension SettingsViewController: UITextFieldDelegate {
     func setupUI() {
         let colors: [UIColor] = [.red, .green, .blue]
         let sliders: [UISlider?] = [redSlider, greenSlider, blueSlider]
-        let colorValues = [color.red, color.green, color.blue]
+        
+        let ciColor = CIColor(color: color)
+        let colorValues = [ciColor.red, ciColor.green, ciColor.blue]
         
         for (index, slider) in sliders.enumerated() {
             if let slider = slider {
-                slider.value = colorValues[index]
+                slider.value = Float(colorValues[index])
                 actionSlider(slider: slider)
                 slider.minimumTrackTintColor = colors[index]
             }
         }
     }
-  
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if let text = textField.text, let value = Float(text) {
@@ -137,36 +135,31 @@ extension SettingsViewController: UITextFieldDelegate {
         shouldChangeCharactersIn range: NSRange,
         replacementString string: String
     ) -> Bool {
-        // Заменяем запятую на точку
+        
         var newText = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         newText = newText.replacingOccurrences(of: ",", with: ".")
         
-        // Проверяем, что в тексте нет двух точек подряд
         if newText.contains("..") {
             return false
         }
         
-        // Проверяем, что в тексте не более одной точки
         let numberOfDots = newText.components(separatedBy: ".").count - 1
         if numberOfDots > 1 && string == "." {
             return false
         }
         
-        // Проверяем, что вводимый символ - цифра, точка или запятая
         let allowedCharacterSet = CharacterSet(charactersIn: "0123456789.,")
         let replacementStringCharacterSet = CharacterSet(charactersIn: string)
         guard allowedCharacterSet.isSuperset(of: replacementStringCharacterSet) else {
             return false
         }
         
-        // Проверяем длину вводимого текста
         let components = newText.components(separatedBy: CharacterSet(charactersIn: "."))
         let numberOfDigits = components.reduce(0) { $0 + $1.count }
         if numberOfDigits > 3 {
             return false
         }
         
-        // Преобразуем текст в число и проверяем, что оно находится в диапазоне от 0 до 1
         if let value = Float(newText), !(0...1).contains(value) {
             return false
         }
