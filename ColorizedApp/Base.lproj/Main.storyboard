@@ -177,7 +177,7 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oK8-Hv-Tvd">
-                                <rect key="frame" x="121" y="801" width="188" height="64"/>
+                                <rect key="frame" x="121" y="568" width="188" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="188" id="ErV-7c-lTg"/>
                                 </constraints>
@@ -196,8 +196,8 @@
                             <constraint firstItem="qzt-8S-xI2" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="SVE-wp-GD3"/>
                             <constraint firstItem="oK8-Hv-Tvd" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="121" id="T5w-eS-B1C"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="qzt-8S-xI2" secondAttribute="trailing" constant="16" id="ZGT-wv-dqV"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="oK8-Hv-Tvd" secondAttribute="bottom" constant="67" id="al4-ak-q6d"/>
-                            <constraint firstItem="oK8-Hv-Tvd" firstAttribute="top" relation="lessThanOrEqual" secondItem="qzt-8S-xI2" secondAttribute="bottom" constant="470" id="dO5-BE-EfA"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="oK8-Hv-Tvd" secondAttribute="bottom" constant="300" id="al4-ak-q6d"/>
+                            <constraint firstItem="oK8-Hv-Tvd" firstAttribute="top" relation="lessThanOrEqual" secondItem="qzt-8S-xI2" secondAttribute="bottom" constant="300" id="dO5-BE-EfA"/>
                             <constraint firstItem="qzt-8S-xI2" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="gzx-PB-PfQ"/>
                         </constraints>
                     </view>
