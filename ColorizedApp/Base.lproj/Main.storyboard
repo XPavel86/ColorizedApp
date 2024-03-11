@@ -80,6 +80,9 @@
                                                     </stackView>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Bkf-ue-Pd0" userLabel="redHorizontal Slider">
                                                         <rect key="frame" x="108" y="0.0" width="238" height="35"/>
+                                                        <connections>
+                                                            <action selector="actionSliderWithSlider:" destination="BYZ-38-t0r" eventType="valueChanged" id="fVr-sZ-7gk"/>
+                                                        </connections>
                                                     </slider>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.00" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Q5b-Qg-dBJ" userLabel="redTextField">
                                                         <rect key="frame" x="354" y="0.0" width="44" height="34"/>
@@ -120,6 +123,9 @@
                                                     </stackView>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Y2g-aW-Oua" userLabel="greenHorizontal Slider">
                                                         <rect key="frame" x="108" y="0.0" width="238" height="35"/>
+                                                        <connections>
+                                                            <action selector="actionSliderWithSlider:" destination="BYZ-38-t0r" eventType="valueChanged" id="ask-vU-eCy"/>
+                                                        </connections>
                                                     </slider>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.00" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uMI-BV-XDV" userLabel="greenTextField">
                                                         <rect key="frame" x="354" y="0.0" width="44" height="34"/>
@@ -160,6 +166,9 @@
                                                     </stackView>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="OIz-xa-ZHv" userLabel="blueHorizontal Slider">
                                                         <rect key="frame" x="108" y="0.0" width="238" height="35"/>
+                                                        <connections>
+                                                            <action selector="actionSliderWithSlider:" destination="BYZ-38-t0r" eventType="valueChanged" id="WYe-T1-Nya"/>
+                                                        </connections>
                                                     </slider>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.00" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3jg-PJ-vXL" userLabel="blueTextField">
                                                         <rect key="frame" x="354" y="0.0" width="44" height="34"/>
@@ -185,7 +194,7 @@
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Done"/>
                                 <connections>
-                                    <action selector="closeAction" destination="BYZ-38-t0r" eventType="touchUpInside" id="l5S-as-hQd"/>
+                                    <action selector="donePressed" destination="BYZ-38-t0r" eventType="touchUpInside" id="l5S-as-hQd"/>
                                 </connections>
                             </button>
                         </subviews>
