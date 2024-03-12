@@ -7,11 +7,11 @@
 
 import UIKit
 
-protocol SettingsViewControllerDelegate: AnyObject {
+ protocol SettingsViewControllerDelegate: AnyObject {
     func setColor(_ color: UIColor)
 }
 
-class MainViewController: UIViewController {
+final class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()

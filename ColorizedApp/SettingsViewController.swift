@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController {
+final class SettingsViewController: UIViewController {
     
     // MARK: - IB Outlets
     @IBOutlet var colorView: UIView!
@@ -33,7 +33,10 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        let tap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(hideKeyboard)
+        )
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         
@@ -107,7 +110,23 @@ extension SettingsViewController: UITextFieldDelegate {
         }
     }
     
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        
+        if let toolbar = textField.inputAccessoryView as? UIToolbar,
+           let labelItem = toolbar.items?.first(
+            where: { $0.customView is UILabel }
+           ) as? UIBarButtonItem,
+           let label = labelItem.customView as? UILabel {
+            label.text = textField.text
+            label.sizeToFit()
+        }
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        if textField.text == "" {
+            textField.text = "0.00"
+        }
         
         if let text = textField.text, let value = Float(text) {
             switch textField {
@@ -124,10 +143,6 @@ extension SettingsViewController: UITextFieldDelegate {
                 actionSlider(slider: blueSlider)
             }
         }
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
     }
     
     func textField(
@@ -179,5 +194,45 @@ extension UITextField {
         keyboardType = .decimalPad
         textContentType = .oneTimeCode
         inputAccessoryView = nil
+        
+        addToolbarOnKeyboard()
+    }
+    
+private func addToolbarOnKeyboard() {
+    
+        let doneToolbar = UIToolbar(
+            frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50)
+        )
+        doneToolbar.barStyle = .default
+        
+        let label = UILabel()
+        label.text = "0.00"
+        label.sizeToFit()
+        label.textAlignment = .right
+        
+        let labelItem = UIBarButtonItem(customView: label)
+        
+        let flexSpace = UIBarButtonItem(
+            barButtonSystemItem: .flexibleSpace,
+            target: nil,
+            action: nil
+        )
+        
+        let done = UIBarButtonItem(
+            title: "Done",
+            style: .done,
+            target: self,
+            action: #selector(doneButtonAction)
+        )
+        
+        let items = [labelItem, flexSpace, done]
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+        
+        inputAccessoryView = doneToolbar
+    }
+    
+    @objc func doneButtonAction() {
+        resignFirstResponder()
     }
 }
