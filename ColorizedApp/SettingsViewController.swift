@@ -59,7 +59,7 @@ final class SettingsViewController: UIViewController {
         case redSlider:
             redValue.text = value
             redTextField.text = value
-            
+                  
         case greenSlider:
             greenValue.text = value
             greenTextField.text = value
@@ -110,16 +110,14 @@ extension SettingsViewController: UITextFieldDelegate {
         }
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        textField.updateToolbarLabel()
+    }
+    
     func textFieldDidChangeSelection(_ textField: UITextField) {
         
-        if let toolbar = textField.inputAccessoryView as? UIToolbar,
-           let labelItem = toolbar.items?.first(
-            where: { $0.customView is UILabel }
-           ) as? UIBarButtonItem,
-           let label = labelItem.customView as? UILabel {
-            label.text = textField.text
-            label.sizeToFit()
-        }
+        textField.updateToolbarLabel()
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -151,17 +149,10 @@ extension SettingsViewController: UITextFieldDelegate {
         replacementString string: String
     ) -> Bool {
         
-        var newText = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+        guard let text = textField.text else { return true }
+        var newText = (text as NSString).replacingCharacters(in: range, with: string)
+   
         newText = newText.replacingOccurrences(of: ",", with: ".")
-        
-        if newText.contains("..") {
-            return false
-        }
-        
-        let numberOfDots = newText.components(separatedBy: ".").count - 1
-        if numberOfDots > 1 && string == "." {
-            return false
-        }
         
         let allowedCharacterSet = CharacterSet(charactersIn: "0123456789.,")
         let replacementStringCharacterSet = CharacterSet(charactersIn: string)
@@ -169,10 +160,16 @@ extension SettingsViewController: UITextFieldDelegate {
             return false
         }
         
-        let components = newText.components(separatedBy: CharacterSet(charactersIn: "."))
-        let numberOfDigits = components.reduce(0) { $0 + $1.count }
-        if numberOfDigits > 3 {
+        let numberOfDots = newText.components(separatedBy: ".").count - 1
+        if numberOfDots > 1 {
             return false
+        }
+        
+        if let dotIndex = newText.firstIndex(of: ".") {
+            let digitsAfterDot = newText.suffix(from: newText.index(after: dotIndex))
+            if digitsAfterDot.count > 2 {
+                return false
+            }
         }
         
         if let value = Float(newText), !(0...1).contains(value) {
@@ -206,6 +203,13 @@ extension UITextField {
         label.text = "0.00"
         label.sizeToFit()
         label.textAlignment = .right
+         
+        let swipe = UISwipeGestureRecognizer(
+            target: self,
+            action: #selector(clearText))
+         
+         label.addGestureRecognizer(swipe)
+         label.isUserInteractionEnabled = true
         
         let labelItem = UIBarButtonItem(customView: label)
         
@@ -214,7 +218,7 @@ extension UITextField {
             target: nil,
             action: nil
         )
-        
+         
         let done = UIBarButtonItem(
             title: "Done",
             style: .done,
@@ -224,11 +228,26 @@ extension UITextField {
  
         doneToolbar.items = [labelItem, flexSpace, done]
         doneToolbar.sizeToFit()
-        
+
         inputAccessoryView = doneToolbar
     }
+    
+    @objc func clearText() {
+          self.text = ""
+      }
     
     @objc func doneButtonAction() {
         resignFirstResponder()
     }
+    
+    func updateToolbarLabel() {
+            if let toolbar = inputAccessoryView as? UIToolbar,
+               let labelItem = toolbar.items?.first(
+                where: { $0.customView is UILabel }
+               ) as? UIBarButtonItem,
+               let label = labelItem.customView as? UILabel {
+                label.text = text
+                label.sizeToFit()
+            }
+        }
 }
