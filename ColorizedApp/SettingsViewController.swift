@@ -32,7 +32,7 @@ final class SettingsViewController: UIViewController {
     // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+      
         let tap = UITapGestureRecognizer(
             target: self,
             action: #selector(hideKeyboard)
