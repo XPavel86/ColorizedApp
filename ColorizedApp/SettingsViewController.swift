@@ -200,11 +200,8 @@ extension UITextField {
     
 private func addToolbarOnKeyboard() {
     
-        let doneToolbar = UIToolbar(
-            frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50)
-        )
-        doneToolbar.barStyle = .default
-        
+        let doneToolbar = UIToolbar()
+
         let label = UILabel()
         label.text = "0.00"
         label.sizeToFit()
@@ -224,9 +221,8 @@ private func addToolbarOnKeyboard() {
             target: self,
             action: #selector(doneButtonAction)
         )
-        
-        let items = [labelItem, flexSpace, done]
-        doneToolbar.items = items
+ 
+        doneToolbar.items = [labelItem, flexSpace, done]
         doneToolbar.sizeToFit()
         
         inputAccessoryView = doneToolbar
