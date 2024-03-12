@@ -198,7 +198,7 @@ extension UITextField {
         addToolbarOnKeyboard()
     }
     
-private func addToolbarOnKeyboard() {
+     func addToolbarOnKeyboard() {
     
         let doneToolbar = UIToolbar()
 
