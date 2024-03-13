@@ -85,13 +85,12 @@ final class SettingsViewController: UIViewController {
         dismiss(animated: true)
     }
     
-    // MARK: - Exported methods
     @objc func hideKeyboard() {
         view.endEditing(true)
     }
 }
 
-// MARK: - Extensions
+// MARK: - Extension SettingsViewController
 extension SettingsViewController: UITextFieldDelegate {
     
     func setupUI() {
@@ -181,6 +180,7 @@ extension SettingsViewController: UITextFieldDelegate {
     }
 }
 
+// MARK: - Extension UITextField
 extension UITextField {
     
     func setSettings() {
