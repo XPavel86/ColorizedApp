@@ -200,8 +200,8 @@ extension UITextField {
         let doneToolbar = UIToolbar()
 
         let label = UILabel()
-        label.text = "0.00"
-        label.sizeToFit()
+        label.text = self.text ?? "0.00"
+        label.sizeThatFits(CGSize(width: 50, height: 10))
         label.textAlignment = .right
          
         let swipe = UISwipeGestureRecognizer(
@@ -247,7 +247,6 @@ extension UITextField {
                ) as? UIBarButtonItem,
                let label = labelItem.customView as? UILabel {
                 label.text = text
-                label.sizeToFit()
             }
         }
 }
