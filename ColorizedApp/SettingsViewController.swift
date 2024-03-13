@@ -94,6 +94,7 @@ final class SettingsViewController: UIViewController {
 extension SettingsViewController: UITextFieldDelegate {
     
     func setupUI() {
+        
         let colors: [UIColor] = [.red, .green, .blue]
         let sliders: [UISlider?] = [redSlider, greenSlider, blueSlider]
         
@@ -110,7 +111,8 @@ extension SettingsViewController: UITextFieldDelegate {
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        
+
+        textField.addToolbarOnKeyboard()
         textField.updateToolbarLabel()
     }
     
@@ -120,6 +122,8 @@ extension SettingsViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+
+        textField.inputAccessoryView = nil
         
         if textField.text == "" {
             textField.text = "0.00"
@@ -191,8 +195,6 @@ extension UITextField {
         keyboardType = .decimalPad
         textContentType = .oneTimeCode
         inputAccessoryView = nil
-        
-        addToolbarOnKeyboard()
     }
     
      func addToolbarOnKeyboard() {
