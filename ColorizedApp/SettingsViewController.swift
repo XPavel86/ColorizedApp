@@ -32,14 +32,7 @@ final class SettingsViewController: UIViewController {
     // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-      
-        let tap = UITapGestureRecognizer(
-            target: self,
-            action: #selector(hideKeyboard)
-        )
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-        
+
         [redTextField, greenTextField, blueTextField].forEach {
             $0?.delegate = self
             $0?.setSettings()
@@ -47,8 +40,14 @@ final class SettingsViewController: UIViewController {
         setupUI()
     }
     
+    // MARK: - Overrides Methods
     override func viewWillLayoutSubviews() {
         colorView.layer.cornerRadius = 20
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        hideKeyboard()
+        super.touchesBegan(touches, with: event)
     }
     
     // MARK: - IB Actions
@@ -85,7 +84,7 @@ final class SettingsViewController: UIViewController {
         dismiss(animated: true)
     }
     
-    @objc func hideKeyboard() {
+    private func hideKeyboard() {
         view.endEditing(true)
     }
 }
@@ -94,19 +93,16 @@ final class SettingsViewController: UIViewController {
 extension SettingsViewController: UITextFieldDelegate {
     
     func setupUI() {
-        
         let colors: [UIColor] = [.red, .green, .blue]
-        let sliders: [UISlider?] = [redSlider, greenSlider, blueSlider]
+        let sliders: [UISlider] = [redSlider, greenSlider, blueSlider]
         
         let ciColor = CIColor(color: color)
         let colorValues = [ciColor.red, ciColor.green, ciColor.blue]
         
         for (index, slider) in sliders.enumerated() {
-            if let slider = slider {
                 slider.value = Float(colorValues[index])
                 actionSlider(slider: slider)
                 slider.minimumTrackTintColor = colors[index]
-            }
         }
     }
     
@@ -160,28 +156,42 @@ extension SettingsViewController: UITextFieldDelegate {
         let allowedCharacterSet = CharacterSet(charactersIn: "0123456789.,")
         let replacementStringCharacterSet = CharacterSet(charactersIn: string)
         guard allowedCharacterSet.isSuperset(of: replacementStringCharacterSet) else {
+            showAlert(message: "Вводите только числа и знаки")
             return false
         }
         
         let numberOfDots = newText.components(separatedBy: ".").count - 1
         if numberOfDots > 1 {
+            showAlert(message: "Введите только одну точку")
             return false
         }
         
         if let dotIndex = newText.firstIndex(of: ".") {
             let digitsAfterDot = newText.suffix(from: newText.index(after: dotIndex))
             if digitsAfterDot.count > 2 {
+                showAlert(message: "Введите не более двух знаков после точки")
                 return false
             }
         }
         
         if let value = Float(newText), !(0...1).contains(value) {
+            showAlert(message: "Введите значение в диапазоне от 0 до 1")
             return false
         }
         
         textField.text = newText
         return false
     }
+    
+    private func showAlert(message: String)
+        {
+            let alert = UIAlertController(
+                title: "Ошибка", message: message, preferredStyle: .alert
+            )
+            let okAction = UIAlertAction(title: "OK", style: .default)
+            alert.addAction(okAction)
+            present(alert, animated: true)
+        }
 }
 
 // MARK: - Extension UITextField
