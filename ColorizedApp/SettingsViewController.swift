@@ -29,7 +29,7 @@ final class SettingsViewController: UIViewController {
     
     weak var delegate: SettingsViewControllerDelegate?
     
-    // MARK: - View life cycle
+    // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -40,7 +40,6 @@ final class SettingsViewController: UIViewController {
         setupUI()
     }
     
-    // MARK: - Overrides Methods
     override func viewWillLayoutSubviews() {
         colorView.layer.cornerRadius = 20
     }
@@ -216,15 +215,8 @@ extension UITextField {
         label.sizeThatFits(CGSize(width: 50, height: 10))
         label.textAlignment = .right
          
-        let swipe = UISwipeGestureRecognizer(
-            target: self,
-            action: #selector(clearText))
-         
-         label.addGestureRecognizer(swipe)
-         label.isUserInteractionEnabled = true
-        
         let labelItem = UIBarButtonItem(customView: label)
-        
+ 
         let flexSpace = UIBarButtonItem(
             barButtonSystemItem: .flexibleSpace,
             target: nil,
@@ -237,6 +229,13 @@ extension UITextField {
             target: self,
             action: #selector(doneButtonAction)
         )
+         
+         let swipe = UISwipeGestureRecognizer(
+             target: self,
+             action: #selector(clearText))
+          
+          doneToolbar.addGestureRecognizer(swipe)
+          doneToolbar.isUserInteractionEnabled = true
  
         doneToolbar.items = [labelItem, flexSpace, done]
         doneToolbar.sizeToFit()
